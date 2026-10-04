@@ -1,0 +1,10 @@
+package com.example.AI.Resume.Maker.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.AI.Resume.Maker.entity.StudyPlan;
+
+public interface StudyPlanRepository
+        extends JpaRepository<StudyPlan, Long> {
+
+}

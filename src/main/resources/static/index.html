@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>AI Career Companion</title>
+
+    <meta
+        name="description"
+        content="AI-powered resume analysis, ATS optimization, career guidance, interview preparation and personalized learning resources.">
+
+    <!-- Bootstrap CSS only -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="/css/style.css">
+
+</head>
+
+<body>
+
+    <div class="app-shell">
+
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+
+            <button
+                class="icon-button"
+                id="mobileMenuButton"
+                type="button"
+                aria-label="Open menu">
+
+                ☰
+
+            </button>
+
+            <div class="mobile-brand">
+
+                <div class="brand-mark">
+                    ✦
+                </div>
+
+                <span>
+                    AI Career Companion
+                </span>
+
+            </div>
+
+            <button
+                class="icon-button"
+                id="mobileProfileButton"
+                type="button"
+                aria-label="Profile">
+
+                ●
+
+            </button>
+
+        </header>
+
+
+        <!-- Sidebar -->
+        <aside
+            class="sidebar"
+            id="sidebar">
+
+            <div class="sidebar-top">
+
+                <div class="brand">
+
+                    <div class="brand-mark">
+                        ✦
+                    </div>
+
+                    <div>
+
+                        <div class="brand-title">
+                            AI Career
+                        </div>
+
+                        <div class="brand-subtitle">
+                            Companion
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="workspace-label">
+                    CAREER WORKSPACE
+                </div>
+
+                <nav class="sidebar-nav">
+
+                    <button
+                        class="nav-item active"
+                        data-section="dashboard"
+                        type="button">
+
+                        <span class="nav-icon">▦</span>
+                        <span>Dashboard</span>
+
+                    </button>
+
+                    <button
+                        class="nav-item"
+                        data-section="resume-builder"
+                        type="button">
+
+                        <span class="nav-icon">▤</span>
+                        <span>Resume Builder</span>
+
+                    </button>
+
+                    <button
+                        class="nav-item"
+                        data-section="resume-analyzer"
+                        type="button">
+
+                        <span class="nav-icon">✓</span>
+                        <span>Resume Analyzer</span>
+
+                    </button>
+
+                    <button
+                        class="nav-item"
+                        data-section="job-matcher"
+                        type="button">
+
+                        <span class="nav-icon">◎</span>
+                        <span>Job Matcher</span>
+
+                    </button>
+
+                    <button
+                        class="nav-item"
+                        data-section="interview"
+                        type="button">
+
+                        <span class="nav-icon">◫</span>
+                        <span>Interview Prep</span>
+
+                    </button>
+
+                    <button
+                        class="nav-item"
+                        data-section="career"
+                        type="button">
+
+                        <span class="nav-icon">⌖</span>
+                        <span>Career Guidance</span>
+
+                    </button>
+
+                    <button
+                        class="nav-item"
+                        data-section="study-plan"
+                        type="button">
+
+                        <span class="nav-icon">▥</span>
+                        <span>Study Planner</span>
+
+                    </button>
+
+                    <button
+                        class="nav-item"
+                        data-section="learning-resources"
+                        type="button">
+
+                        <span class="nav-icon">◇</span>
+                        <span>Learning Resources</span>
+
+                    </button>
+
+                </nav>
+
+            </div>
+
+
+            <div class="sidebar-bottom">
+
+                <div class="sidebar-status">
+
+                    <span class="status-dot"></span>
+
+                    <div>
+
+                        <div class="status-title">
+                            AI Services
+                        </div>
+
+                        <div
+                            class="status-text"
+                            id="sidebarHealthStatus">
+
+                            Checking...
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="sidebar-footer">
+                    AI Career Companion
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- Main -->
+        <main class="main-content">
+
+            <!-- Top bar -->
+            <header class="topbar">
+
+                <div>
+
+                    <div
+                        class="breadcrumb-text"
+                        id="breadcrumbText">
+
+                        Dashboard
+
+                    </div>
+
+                    <h1
+                        class="page-title"
+                        id="pageTitle">
+
+                        Career Dashboard
+
+                    </h1>
+
+                </div>
+
+                <div class="topbar-actions">
+
+                    <button
+                        class="topbar-icon-button"
+                        id="healthButton"
+                        type="button"
+                        title="System status">
+
+                        ◌
+
+                    </button>
+
+                    <div class="profile-chip">
+
+                        <div class="profile-avatar">
+                            AI
+                        </div>
+
+                        <div>
+
+                            <div class="profile-name">
+                                Career Workspace
+                            </div>
+
+                            <div class="profile-role">
+                                Personal Career Assistant
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <!-- Toasts -->
+            <div
+                class="toast-container-custom"
+                id="toastContainer">
+            </div>
+
+
+            <!-- ===================================================== -->
+            <!-- DASHBOARD -->
+            <!-- ===================================================== -->
+
+            <section
+                class="app-section active-section"
+                id="section-dashboard">
+
+                <div class="hero-panel">
+
+                    <div class="hero-content">
+
+                        <span class="eyebrow">
+                            ✦ AI-POWERED CAREER WORKSPACE
+                        </span>
+
+                        <h2>
+                            Build a stronger resume.
+                            <span>Prepare smarter.</span>
+                        </h2>
+
+                        <p>
+                            Analyze your resume, match it against
+                            real jobs, improve ATS alignment,
+                            prepare for interviews and close your
+                            skill gaps.
+                        </p>
+
+                        <div class="hero-actions">
+
+                            <button
+                                class="primary-button"
+                                data-open-section="resume-builder"
+                                type="button">
+
+                                Optimize My Resume →
+
+                            </button>
+
+                            <button
+                                class="secondary-button"
+                                data-open-section="job-matcher"
+                                type="button">
+
+                                Match a Job →
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                    <div class="hero-visual">
+
+                        <div class="hero-orbit orbit-one"></div>
+
+                        <div class="hero-orbit orbit-two"></div>
+
+                        <div class="hero-core">
+                            ✦
+                        </div>
+
+                        <div class="floating-card card-a">
+
+                            <div class="floating-symbol">
+                                ✓
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    Resume
+                                </strong>
+
+                                <span>
+                                    Analyzed
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="floating-card card-b">
+
+                            <div class="floating-symbol">
+                                ↑
+                            </div>
+
+                            <div>
+
+                                <strong>
+                                    ATS
+                                </strong>
+
+                                <span>
+                                    Optimized
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Dashboard metrics -->
+
+                <div class="stats-grid">
+
+                    <div class="metric-card">
+
+                        <div class="metric-icon">
+                            R
+                        </div>
+
+                        <div>
+
+                            <span class="metric-label">
+                                Resume analyses
+                            </span>
+
+                            <strong
+                                id="dashboardResumeCount">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="metric-card">
+
+                        <div class="metric-icon">
+                            J
+                        </div>
+
+                        <div>
+
+                            <span class="metric-label">
+                                Job matches
+                            </span>
+
+                            <strong
+                                id="dashboardJobCount">
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="metric-card">
+
+                        <div class="metric-icon">
+                            AI
+                        </div>
+
+                        <div>
+
+                            <span class="metric-label">
+                                Resume Builder
+                            </span>
+
+                            <strong>
+                                AI
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="metric-card">
+
+                        <div class="metric-icon">
+                            15+
+                        </div>
+
+                        <div>
+
+                            <span class="metric-label">
+                                Learning platforms
+                            </span>
+
+                            <strong>
+                                15+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="section-heading-row">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            CAREER TOOLS
+                        </span>
+
+                        <h3>
+                            Everything you need
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="feature-grid">
+
+                    <button
+                        class="feature-card"
+                        data-open-section="resume-builder"
+                        type="button">
+
+                        <div class="feature-icon">
+                            AI
+                        </div>
+
+                        <div class="feature-content">
+
+                            <h4>
+                                AI Resume Builder
+                            </h4>
+
+                            <p>
+                                Upload your existing resume and
+                                generate a professional role-targeted
+                                version.
+                            </p>
+
+                            <span>
+                                Optimize resume →
+                            </span>
+
+                        </div>
+
+                    </button>
+
+
+                    <button
+                        class="feature-card"
+                        data-open-section="resume-analyzer"
+                        type="button">
+
+                        <div class="feature-icon">
+                            ✓
+                        </div>
+
+                        <div class="feature-content">
+
+                            <h4>
+                                Resume Analyzer
+                            </h4>
+
+                            <p>
+                                Evaluate structure, skills,
+                                strengths and weaknesses.
+                            </p>
+
+                            <span>
+                                Analyze resume →
+                            </span>
+
+                        </div>
+
+                    </button>
+
+
+                    <button
+                        class="feature-card"
+                        data-open-section="job-matcher"
+                        type="button">
+
+                        <div class="feature-icon">
+                            ◎
+                        </div>
+
+                        <div class="feature-content">
+
+                            <h4>
+                                ATS Job Matcher
+                            </h4>
+
+                            <p>
+                                Compare your resume against a
+                                real job description.
+                            </p>
+
+                            <span>
+                                Match a job →
+                            </span>
+
+                        </div>
+
+                    </button>
+
+
+                    <button
+                        class="feature-card"
+                        data-open-section="interview"
+                        type="button">
+
+                        <div class="feature-icon">
+                            Q
+                        </div>
+
+                        <div class="feature-content">
+
+                            <h4>
+                                Interview Prep
+                            </h4>
+
+                            <p>
+                                Generate technical, project and
+                                HR questions.
+                            </p>
+
+                            <span>
+                                Prepare →
+                            </span>
+
+                        </div>
+
+                    </button>
+
+
+                    <button
+                        class="feature-card"
+                        data-open-section="career"
+                        type="button">
+
+                        <div class="feature-icon">
+                            C
+                        </div>
+
+                        <div class="feature-content">
+
+                            <h4>
+                                Career Guidance
+                            </h4>
+
+                            <p>
+                                Discover suitable roles, gaps
+                                and recommended projects.
+                            </p>
+
+                            <span>
+                                Explore career →
+                            </span>
+
+                        </div>
+
+                    </button>
+
+
+                    <button
+                        class="feature-card"
+                        data-open-section="study-plan"
+                        type="button">
+
+                        <div class="feature-icon">
+                            S
+                        </div>
+
+                        <div class="feature-content">
+
+                            <h4>
+                                Study Planner
+                            </h4>
+
+                            <p>
+                                Build a structured learning plan
+                                around your target role.
+                            </p>
+
+                            <span>
+                                Build plan →
+                            </span>
+
+                        </div>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================================== -->
+            <!-- RESUME BUILDER -->
+            <!-- ===================================================== -->
+
+            <section
+                class="app-section"
+                id="section-resume-builder">
+
+                <div class="section-intro">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            RESUME BUILDER
+                        </span>
+
+                        <h2>
+                            Transform your current resume.
+                        </h2>
+
+                        <p>
+                            Upload your existing resume, choose a
+                            target role and optionally paste the
+                            job description.
+                        </p>
+
+                    </div>
+
+                    <div class="process-steps">
+
+                        <div class="process-step active">
+                            <span>01</span>
+                            <small>Upload</small>
+                        </div>
+
+                        <div class="process-line"></div>
+
+                        <div class="process-step">
+                            <span>02</span>
+                            <small>Target</small>
+                        </div>
+
+                        <div class="process-line"></div>
+
+                        <div class="process-step">
+                            <span>03</span>
+                            <small>Optimize</small>
+                        </div>
+
+                        <div class="process-line"></div>
+
+                        <div class="process-step">
+                            <span>04</span>
+                            <small>Download</small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="workspace-grid">
+
+                    <div class="glass-card">
+
+                        <div class="card-header-row">
+
+                            <div>
+
+                                <h3>
+                                    Resume details
+                                </h3>
+
+                                <p>
+                                    Your original information will
+                                    be preserved.
+                                </p>
+
+                            </div>
+
+                            <span class="soft-badge">
+                                PDF
+                            </span>
+
+                        </div>
+
+
+                        <form id="resumeBuilderForm">
+
+                            <label class="field-label">
+                                Existing resume
+                            </label>
+
+                            <label
+                                class="upload-area"
+                                for="builderResumeFile">
+
+                                <input
+                                    type="file"
+                                    id="builderResumeFile"
+                                    accept=".pdf,application/pdf"
+                                    hidden>
+
+                                <div class="upload-icon">
+                                    ↑
+                                </div>
+
+                                <strong>
+                                    Choose your resume
+                                </strong>
+
+                                <span>
+                                    PDF format
+                                </span>
+
+                                <small id="builderFileName">
+                                    No file selected
+                                </small>
+
+                            </label>
+
+
+                            <div class="form-group">
+
+                                <label
+                                    class="field-label"
+                                    for="builderTargetRole">
+
+                                    Target job role
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="builderTargetRole"
+                                    class="form-control custom-input"
+                                    placeholder="Java Backend Developer"
+                                    required>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label
+                                    class="field-label"
+                                    for="builderJobDescription">
+
+                                    Job description
+
+                                    <span class="optional-label">
+                                        Optional
+                                    </span>
+
+                                </label>
+
+                                <textarea
+                                    id="builderJobDescription"
+                                    class="form-control custom-input textarea-large"
+                                    placeholder="Paste the job description here to generate a job-specific ATS optimized resume..."></textarea>
+
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                class="primary-button full-width"
+                                id="builderSubmitButton">
+
+                                Generate Optimized Resume
+
+                            </button>
+
+                        </form>
+
+
+                        <div
+                            class="loading-panel d-none"
+                            id="builderLoading">
+
+                            <div class="spinner-ring"></div>
+
+                            <div>
+
+                                <strong>
+                                    Building your resume...
+                                </strong>
+
+                                <span>
+                                    AI is restructuring your existing content.
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="glass-card result-panel">
+
+                        <div
+                            class="empty-state"
+                            id="builderEmptyState">
+
+                            <div class="empty-icon">
+                                R
+                            </div>
+
+                            <h3>
+                                Your optimized resume
+                            </h3>
+
+                            <p>
+                                Your generated resume preview,
+                                ATS analysis and download option
+                                will appear here.
+                            </p>
+
+                        </div>
+
+
+                        <div
+                            id="builderResult"
+                            class="d-none">
+
+                            <div class="result-toolbar">
+
+                                <div>
+
+                                    <span class="result-label">
+                                        OPTIMIZED RESUME
+                                    </span>
+
+                                    <h3
+                                        id="builderResultTitle">
+
+                                        Resume Preview
+
+                                    </h3>
+
+                                </div>
+
+                                <button
+                                    class="secondary-button"
+                                    id="downloadResumeButton"
+                                    type="button">
+
+                                    Download PDF
+
+                                </button>
+
+                            </div>
+
+
+                            <div
+                                class="resume-preview"
+                                id="resumePreview">
+                            </div>
+
+
+                            <div
+                                class="ats-summary-card"
+                                id="builderAtsSummary">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================================== -->
+            <!-- RESUME ANALYZER -->
+            <!-- ===================================================== -->
+
+            <section
+                class="app-section"
+                id="section-resume-analyzer">
+
+                <div class="section-intro">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            RESUME ANALYZER
+                        </span>
+
+                        <h2>
+                            Understand how strong your resume is.
+                        </h2>
+
+                        <p>
+                            Get deterministic scoring and AI-powered
+                            feedback from your actual resume.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="workspace-grid">
+
+                    <div class="glass-card">
+
+                        <form id="resumeAnalyzerForm">
+
+                            <label class="field-label">
+                                Resume PDF
+                            </label>
+
+                            <label
+                                class="upload-area compact-upload"
+                                for="analyzerResumeFile">
+
+                                <input
+                                    type="file"
+                                    id="analyzerResumeFile"
+                                    accept=".pdf,application/pdf"
+                                    hidden>
+
+                                <div class="upload-icon">
+                                    ↑
+                                </div>
+
+                                <strong>
+                                    Select resume
+                                </strong>
+
+                                <span>
+                                    PDF format
+                                </span>
+
+                                <small id="analyzerFileName">
+                                    No file selected
+                                </small>
+
+                            </label>
+
+
+                            <button
+                                type="submit"
+                                class="primary-button full-width">
+
+                                Analyze Resume
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <div class="glass-card result-panel">
+
+                        <div
+                            class="empty-state"
+                            id="analyzerEmptyState">
+
+                            <div class="empty-icon">
+                                A
+                            </div>
+
+                            <h3>
+                                Analysis results
+                            </h3>
+
+                            <p>
+                                Resume score, detected skills,
+                                strengths and improvement areas
+                                will appear here.
+                            </p>
+
+                        </div>
+
+                        <div
+                            id="analyzerResult"
+                            class="d-none">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================================== -->
+            <!-- JOB MATCHER -->
+            <!-- ===================================================== -->
+
+            <section
+                class="app-section"
+                id="section-job-matcher">
+
+                <div class="section-intro">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            ATS JOB MATCHER
+                        </span>
+
+                        <h2>
+                            See how your resume matches a job.
+                        </h2>
+
+                        <p>
+                            Required skills have more influence on
+                            the score than optional skills.
+                        </p>
+
+                    </div>
+
+                    <div class="score-legend">
+
+                        <span>
+                            <i class="legend-dot required"></i>
+                            Required
+                        </span>
+
+                        <span>
+                            <i class="legend-dot preferred"></i>
+                            Preferred
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="workspace-grid">
+
+                    <div class="glass-card">
+
+                        <form id="jobMatcherForm">
+
+                            <label class="field-label">
+                                Resume PDF
+                            </label>
+
+                            <label
+                                class="upload-area compact-upload"
+                                for="jobResumeFile">
+
+                                <input
+                                    type="file"
+                                    id="jobResumeFile"
+                                    accept=".pdf,application/pdf"
+                                    hidden>
+
+                                <div class="upload-icon">
+                                    ↑
+                                </div>
+
+                                <strong>
+                                    Select resume
+                                </strong>
+
+                                <small id="jobFileName">
+                                    No file selected
+                                </small>
+
+                            </label>
+
+
+                            <div class="form-group">
+
+                                <label
+                                    class="field-label"
+                                    for="jobTitle">
+
+                                    Target job title
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="jobTitle"
+                                    class="form-control custom-input"
+                                    placeholder="Java Backend Developer"
+                                    required>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label
+                                    class="field-label"
+                                    for="jobDescription">
+
+                                    Job description
+
+                                </label>
+
+                                <textarea
+                                    id="jobDescription"
+                                    class="form-control custom-input textarea-xl"
+                                    placeholder="Paste the complete job description..."
+                                    required></textarea>
+
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                class="primary-button full-width">
+
+                                Analyze Job Match
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <div class="glass-card result-panel">
+
+                        <div
+                            class="empty-state"
+                            id="jobEmptyState">
+
+                            <div class="empty-icon">
+                                M
+                            </div>
+
+                            <h3>
+                                ATS alignment
+                            </h3>
+
+                            <p>
+                                Score breakdown, matched skills,
+                                missing skills and AI suggestions
+                                will appear here.
+                            </p>
+
+                        </div>
+
+                        <div
+                            id="jobResult"
+                            class="d-none">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================================== -->
+            <!-- INTERVIEW -->
+            <!-- ===================================================== -->
+
+            <section
+                class="app-section"
+                id="section-interview">
+
+                <div class="section-intro">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            INTERVIEW PREPARATION
+                        </span>
+
+                        <h2>
+                            Practice questions built for you.
+                        </h2>
+
+                        <p>
+                            Generate technical, project and HR
+                            questions using your resume.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="workspace-grid">
+
+                    <div class="glass-card">
+
+                        <form id="interviewForm">
+
+                            <label class="field-label">
+                                Resume PDF
+                            </label>
+
+                            <label
+                                class="upload-area compact-upload"
+                                for="interviewResumeFile">
+
+                                <input
+                                    type="file"
+                                    id="interviewResumeFile"
+                                    accept=".pdf,application/pdf"
+                                    hidden>
+
+                                <div class="upload-icon">
+                                    Q
+                                </div>
+
+                                <strong>
+                                    Select resume
+                                </strong>
+
+                                <small id="interviewFileName">
+                                    No file selected
+                                </small>
+
+                            </label>
+
+
+                            <div class="form-group">
+
+                                <label
+                                    class="field-label"
+                                    for="interviewTargetRole">
+
+                                    Target role
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="interviewTargetRole"
+                                    class="form-control custom-input"
+                                    placeholder="Java Backend Developer"
+                                    required>
+
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                class="primary-button full-width">
+
+                                Generate Interview Prep
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <div class="glass-card result-panel">
+
+                        <div
+                            class="empty-state"
+                            id="interviewEmptyState">
+
+                            <div class="empty-icon">
+                                Q
+                            </div>
+
+                            <h3>
+                                Interview questions
+                            </h3>
+
+                            <p>
+                                Your personalized preparation
+                                will appear here.
+                            </p>
+
+                        </div>
+
+                        <div
+                            id="interviewResult"
+                            class="d-none">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================================== -->
+            <!-- CAREER -->
+            <!-- ===================================================== -->
+
+            <section
+                class="app-section"
+                id="section-career">
+
+                <div class="section-intro">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            CAREER GUIDANCE
+                        </span>
+
+                        <h2>
+                            Turn your resume into a roadmap.
+                        </h2>
+
+                        <p>
+                            Discover suitable roles, skill gaps,
+                            projects and action steps.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="workspace-grid">
+
+                    <div class="glass-card">
+
+                        <form id="careerForm">
+
+                            <label class="field-label">
+                                Resume PDF
+                            </label>
+
+                            <label
+                                class="upload-area compact-upload"
+                                for="careerResumeFile">
+
+                                <input
+                                    type="file"
+                                    id="careerResumeFile"
+                                    accept=".pdf,application/pdf"
+                                    hidden>
+
+                                <div class="upload-icon">
+                                    C
+                                </div>
+
+                                <strong>
+                                    Select resume
+                                </strong>
+
+                                <small id="careerFileName">
+                                    No file selected
+                                </small>
+
+                            </label>
+
+
+                            <div class="form-group">
+
+                                <label
+                                    class="field-label"
+                                    for="careerTargetRole">
+
+                                    Target role
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="careerTargetRole"
+                                    class="form-control custom-input"
+                                    placeholder="Java Backend Developer"
+                                    required>
+
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                class="primary-button full-width">
+
+                                Generate Career Guidance
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <div class="glass-card result-panel">
+
+                        <div
+                            class="empty-state"
+                            id="careerEmptyState">
+
+                            <div class="empty-icon">
+                                C
+                            </div>
+
+                            <h3>
+                                Career roadmap
+                            </h3>
+
+                            <p>
+                                Your recommended roles, skill gaps
+                                and action plan will appear here.
+                            </p>
+
+                        </div>
+
+                        <div
+                            id="careerResult"
+                            class="d-none">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================================== -->
+            <!-- STUDY PLAN -->
+            <!-- ===================================================== -->
+
+            <section
+                class="app-section"
+                id="section-study-plan">
+
+                <div class="section-intro">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            STUDY PLANNER
+                        </span>
+
+                        <h2>
+                            Build a structured learning path.
+                        </h2>
+
+                        <p>
+                            Generate a learning plan around your
+                            current profile and target role.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="workspace-grid">
+
+                    <div class="glass-card">
+
+                        <form id="studyPlanForm">
+
+                            <label class="field-label">
+                                Resume PDF
+                            </label>
+
+                            <label
+                                class="upload-area compact-upload"
+                                for="studyResumeFile">
+
+                                <input
+                                    type="file"
+                                    id="studyResumeFile"
+                                    accept=".pdf,application/pdf"
+                                    hidden>
+
+                                <div class="upload-icon">
+                                    S
+                                </div>
+
+                                <strong>
+                                    Select resume
+                                </strong>
+
+                                <small id="studyFileName">
+                                    No file selected
+                                </small>
+
+                            </label>
+
+
+                            <div class="form-group">
+
+                                <label
+                                    class="field-label"
+                                    for="studyTargetRole">
+
+                                    Target role
+
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="studyTargetRole"
+                                    class="form-control custom-input"
+                                    placeholder="Java Backend Developer"
+                                    required>
+
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                class="primary-button full-width">
+
+                                Generate Study Plan
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                    <div class="glass-card result-panel">
+
+                        <div
+                            class="empty-state"
+                            id="studyEmptyState">
+
+                            <div class="empty-icon">
+                                S
+                            </div>
+
+                            <h3>
+                                Your study plan
+                            </h3>
+
+                            <p>
+                                Topics, weekly tasks and projects
+                                will appear here.
+                            </p>
+
+                        </div>
+
+                        <div
+                            id="studyResult"
+                            class="d-none">
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ===================================================== -->
+            <!-- LEARNING RESOURCES -->
+            <!-- ===================================================== -->
+
+            <section
+                class="app-section"
+                id="section-learning-resources">
+
+                <div class="section-intro">
+
+                    <div>
+
+                        <span class="section-kicker">
+                            LEARNING RESOURCES
+                        </span>
+
+                        <h2>
+                            Close your skill gaps.
+                        </h2>
+
+                        <p>
+                            Search the learning catalog for resources
+                            relevant to the skills you need.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="glass-card resource-search-card">
+
+                    <form
+                        id="learningResourceForm"
+                        class="resource-search-form">
+
+                        <div class="resource-input-wrapper">
+
+                            <label
+                                class="field-label"
+                                for="learningSkills">
+
+                                Skills to learn
+
+                            </label>
+
+                            <input
+                                type="text"
+                                id="learningSkills"
+                                class="form-control custom-input"
+                                placeholder="Docker, AWS, Microservices"
+                                required>
+
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="primary-button">
+
+                            Find Resources
+
+                        </button>
+
+                    </form>
+
+
+                    <div class="resource-note">
+
+                        <span>
+                            i
+                        </span>
+
+                        <span>
+                            Certificate availability can vary
+                            by platform and course.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="resource-grid"
+                    id="learningResourceResults">
+
+                    <div class="empty-state full-span">
+
+                        <div class="empty-icon">
+                            L
+                        </div>
+
+                        <h3>
+                            Personalized learning resources
+                        </h3>
+
+                        <p>
+                            Search for a skill to see suitable
+                            learning platforms.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- Footer -->
+
+            <footer class="app-footer">
+
+                <span>
+                    AI Career Companion
+                </span>
+
+                <span>
+                    Java · Spring Boot · MySQL · Gemini
+                </span>
+
+            </footer>
+
+        </main>
+
+    </div>
+
+
+    <!-- IMPORTANT:
+         No Bootstrap JavaScript is included.
+         Our application uses its own JavaScript. -->
+
+    <script src="/js/app.js"></script>
+
+</body>
+
+</html>
