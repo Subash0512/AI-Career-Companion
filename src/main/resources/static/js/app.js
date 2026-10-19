@@ -6,6 +6,14 @@ const state = {
     latestMissingSkills: []
 };
 
+const learningCatalogState = {
+    allResources: [],
+    visibleResources: [],
+    activeFilter: "ALL",
+    searchText: "",
+    personalizedResults: false
+};
+
 
 document.addEventListener(
     "DOMContentLoaded",
@@ -18,6 +26,8 @@ document.addEventListener(
         initializeFileNames();
 
         initializeMobileMenu();
+
+        initializeLearningCatalog();
 
         checkHealth();
 
@@ -299,6 +309,35 @@ function initializeForms() {
             "click",
             checkHealth
         );
+
+    document.getElementById("resourceCatalogSearch")
+        .addEventListener("input", event => {
+            learningCatalogState.searchText = event.target.value.trim().toLowerCase();
+            applyLearningCatalogFilters();
+        });
+
+    document.querySelectorAll("[data-resource-filter]")
+        .forEach(button => button.addEventListener("click", () => {
+            learningCatalogState.activeFilter = button.dataset.resourceFilter;
+            document.querySelectorAll("[data-resource-filter]").forEach(item => {
+                item.classList.toggle("active", item === button);
+            });
+            applyLearningCatalogFilters();
+        }));
+
+    document.getElementById("browseAllResources")
+        .addEventListener("click", () => {
+            learningCatalogState.personalizedResults = false;
+            learningCatalogState.visibleResources = learningCatalogState.allResources;
+            learningCatalogState.activeFilter = "ALL";
+            document.querySelectorAll("[data-resource-filter]").forEach(item => {
+                item.classList.toggle("active", item.dataset.resourceFilter === "ALL");
+            });
+            document.getElementById("learningSkills").value = "";
+            document.getElementById("resourceCatalogSearch").value = "";
+            learningCatalogState.searchText = "";
+            applyLearningCatalogFilters();
+        });
 
 }
 
@@ -1261,9 +1300,16 @@ async function handleLearningResources(
             );
 
 
-        renderLearningResources(
-            data
-        );
+        learningCatalogState.personalizedResults = true;
+        learningCatalogState.visibleResources = deduplicateLearningResources(data);
+        learningCatalogState.activeFilter = "ALL";
+        document.querySelectorAll("[data-resource-filter]").forEach(item => {
+            item.classList.toggle("active", item.dataset.resourceFilter === "ALL");
+        });
+        learningCatalogState.searchText = "";
+        document.getElementById("resourceCatalogSearch").value = "";
+        document.getElementById("browseAllResources").classList.remove("d-none");
+        applyLearningCatalogFilters();
 
     } catch (error) {
 
@@ -1277,7 +1323,7 @@ async function handleLearningResources(
         setLoading(
             button,
             false,
-            "Find Resources"
+            "Find matching resources →"
         );
 
     }
@@ -2710,146 +2756,165 @@ function renderStudyPlan(
    LEARNING RESOURCES
    ========================================================= */
 
-function renderLearningResources(
-    resources
-) {
+function initializeLearningCatalog() {
 
-    const container =
-        document.getElementById(
-            "learningResourceResults"
-        );
-
-
-    if (!Array.isArray(resources)
-        || !resources.length) {
-
-        container.innerHTML = `
-            <div class="empty-state full-span">
-
-                <div class="empty-icon">
-                    ?
-                </div>
-
-                <h3>
-                    No matching resources found
-                </h3>
-
-                <p>
-                    Try another skill or a broader skill name.
-                </p>
-
-            </div>
-        `;
-
-        return;
-    }
-
-
-    container.innerHTML =
-        resources
-            .map(
-                renderResourceCard
-            )
-            .join("");
-
+    fetch(`${API_BASE_URL}/api/learning-resources/all`)
+        .then(parseResponse)
+        .then(resources => {
+            learningCatalogState.allResources = deduplicateLearningResources(resources);
+            learningCatalogState.visibleResources = learningCatalogState.allResources;
+            applyLearningCatalogFilters();
+        })
+        .catch(() => {
+            const summary = document.getElementById("resourceResultSummary");
+            if (summary) summary.textContent = "Learning catalog could not be loaded. Check that the application server is running.";
+            renderLearningResources([]);
+        });
 }
 
 
-function renderResourceCard(
-    resource
-) {
+function deduplicateLearningResources(resources) {
+
+    if (!Array.isArray(resources)) return [];
+
+    const byPlatform = new Map();
+
+    resources.forEach(resource => {
+        if (!resource || !resource.platform) return;
+        const key = String(resource.platform).trim().toLowerCase();
+        if (!byPlatform.has(key)) {
+            byPlatform.set(key, { ...resource, _matchedSkills: new Set([resource.skill].filter(Boolean)) });
+        } else {
+            const existing = byPlatform.get(key);
+            if (resource.skill) existing._matchedSkills.add(resource.skill);
+        }
+    });
+
+    return Array.from(byPlatform.values()).map(resource => ({
+        ...resource,
+        skill: Array.from(resource._matchedSkills || []).join(" · ") || resource.skill || "General",
+        _matchedSkills: undefined
+    }));
+}
+
+
+function applyLearningCatalogFilters() {
+
+    const source = learningCatalogState.visibleResources || [];
+    const search = learningCatalogState.searchText;
+    const filter = learningCatalogState.activeFilter;
+
+    const matches = source.filter(resource => {
+        const searchable = [
+            resource.platform,
+            resource.description,
+            resource.skill,
+            Array.isArray(resource.skills) ? resource.skills.join(" ") : "",
+            resource.learningCost,
+            resource.credentialStatus,
+            resource.resourceType
+        ].filter(Boolean).join(" ").toLowerCase();
+
+        const matchesSearch = !search || searchable.includes(search);
+        const credentialType = resource.credentialType || inferCredentialType(resource);
+        const matchesFilter = filter === "ALL"
+            || (filter === "FREE_LEARNING_PAID_EXAM"
+                ? ["FREE_LEARNING_PAID_EXAM", "FREE_AUDIT_PAID_CERTIFICATE"].includes(credentialType)
+                : credentialType === filter);
+
+        return matchesSearch && matchesFilter;
+    });
+
+    renderLearningResources(matches);
+
+    const summary = document.getElementById("resourceResultSummary");
+    if (summary) {
+        const countLabel = matches.length === 1 ? "result" : "results";
+        const sourceLabel = learningCatalogState.personalizedResults ? "matched" : "in the directory";
+        summary.textContent = `${matches.length} ${sourceLabel} ${countLabel}`;
+    }
+
+    const browseButton = document.getElementById("browseAllResources");
+    if (browseButton) browseButton.classList.toggle("d-none", !learningCatalogState.personalizedResults);
+}
+
+
+function inferCredentialType(resource) {
+
+    const platform = String(resource.platform || "").toLowerCase();
+    const status = String(resource.credentialStatus || "").toLowerCase();
+
+    if (["freecodecamp", "kaggle learn", "simplilearn skillup", "hubspot academy", "google skillshop"].includes(platform)) return "FREE_CERTIFICATE";
+    if (["ibm skillsbuild", "salesforce trailhead"].includes(platform)) return "FREE_BADGE";
+    if (platform === "the odin project") return "NO_CERTIFICATE";
+    if (platform === "great learning academy") return "PAID_CERTIFICATE";
+    if (status.includes("usually paid") || status.includes("audit does not include")) return "FREE_AUDIT_PAID_CERTIFICATE";
+    if (status.includes("exam") && (status.includes("paid") || status.includes("cost"))) return "FREE_LEARNING_PAID_EXAM";
+    return "VARIES";
+}
+
+
+function renderLearningResources(resources) {
+
+    const container = document.getElementById("learningResourceResults");
+
+    if (!Array.isArray(resources) || !resources.length) {
+        container.innerHTML = `
+            <div class="empty-state full-span resource-empty-state">
+                <div class="empty-icon" aria-hidden="true">⌕</div>
+                <h3>No platforms match these filters</h3>
+                <p>Try another keyword or choose “All resources” to see the whole catalog.</p>
+            </div>`;
+        return;
+    }
+
+    container.innerHTML = resources.map(renderResourceCard).join("");
+}
+
+
+function renderResourceCard(resource) {
+
+    const credentialType = resource.credentialType || inferCredentialType(resource);
+    const credentialLabels = {
+        FREE_CERTIFICATE: { label: "Free certificate", className: "credential-free" },
+        FREE_BADGE: { label: "Free badge / credential", className: "credential-badge" },
+        FREE_LEARNING_PAID_EXAM: { label: "Free learning · paid exam", className: "credential-paid" },
+        FREE_AUDIT_PAID_CERTIFICATE: { label: "Free audit · paid certificate", className: "credential-paid" },
+        PAID_CERTIFICATE: { label: "Certificate may cost", className: "credential-paid" },
+        NO_CERTIFICATE: { label: "No certificate", className: "credential-neutral" },
+        VARIES: { label: "Varies by course", className: "credential-varies" }
+    };
+    const credential = credentialLabels[credentialType] || credentialLabels.VARIES;
+    const url = safeUrl(resource.url);
+    const skillLabels = (Array.isArray(resource.skills) && resource.skills.length)
+        ? resource.skills.slice(0, 3)
+        : String(resource.skill || "General skills").split(/[·,]/).map(value => value.trim()).filter(Boolean).slice(0, 3);
+    const remainingSkillCount = Math.max(0, (Array.isArray(resource.skills) && resource.skills.length)
+        ? resource.skills.length - skillLabels.length
+        : String(resource.skill || "").split(/[·,]/).filter(Boolean).length - skillLabels.length);
+    const skillChips = skillLabels.map(skill => `<span class="resource-tag">${escapeHtml(skill)}</span>`).join("")
+        + (remainingSkillCount > 0 ? `<span class="resource-tag resource-tag-more">+${remainingSkillCount} more</span>` : "");
 
     return `
         <article class="resource-card">
-
-            <div class="resource-platform">
-
-                <div>
-
-                    <strong>
-                        ${escapeHtml(
-                            resource.platform
-                            || "Learning Platform"
-                        )}
-                    </strong>
-
-                    <div class="resource-tags mt-2">
-
-                        <span class="resource-tag">
-                            ${escapeHtml(
-                                resource.skill
-                                || "Skill"
-                            )}
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <span class="resource-type">
-                    ${escapeHtml(
-                        resource.resourceType
-                        || "Learning"
-                    )}
-                </span>
-
+            <div class="resource-card-topline">
+                <div class="resource-monogram" aria-hidden="true">${escapeHtml(String(resource.platform || "L").trim().charAt(0).toUpperCase())}</div>
+                <span class="resource-type">${escapeHtml(resource.resourceType || "Learning platform")}</span>
             </div>
-
-
-            <p>
-                ${escapeHtml(
-                    resource.description
-                    || "Learning resource."
-                )}
-            </p>
-
-
-            <div class="resource-tags">
-
-                <span class="resource-tag">
-                    ${escapeHtml(
-                        resource.learningCost
-                        || "See provider"
-                    )}
-                </span>
-
+            <h4>${escapeHtml(resource.platform || "Learning Platform")}</h4>
+            <div class="resource-tags resource-skill-tags">
+                ${skillChips}
             </div>
-
-
-            ${
-                resource.credentialStatus
-                    ? `
-                        <div class="resource-credential">
-                            ${escapeHtml(
-                                resource.credentialStatus
-                            )}
-                        </div>
-                    `
-                    : ""
-            }
-
-
-            ${
-                resource.url
-                    ? `
-                        <a
-                            href="${safeUrl(
-                                resource.url
-                            )}"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            class="resource-link">
-
-                            Open resource →
-
-                        </a>
-                    `
-                    : ""
-            }
-
+            <p>${escapeHtml(resource.description || "Learning resources for career development.")}</p>
+            <div class="resource-credential ${credential.className}">
+                <span class="credential-dot" aria-hidden="true"></span>
+                <strong>${credential.label}</strong>
+            </div>
+            <div class="resource-cost-note">${escapeHtml(resource.learningCost || "Check provider for current terms")}</div>
+            ${resource.credentialStatus ? `<details class="credential-details"><summary>Certificate details</summary><p>${escapeHtml(resource.credentialStatus)}</p></details>` : ""}
+            ${url ? `<a href="${url}" target="_blank" rel="noopener noreferrer" class="resource-link">Visit official platform <span aria-hidden="true">↗</span></a>` : ""}
         </article>
     `;
-
 }
 
 

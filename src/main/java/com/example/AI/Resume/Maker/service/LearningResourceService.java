@@ -565,6 +565,103 @@ public class LearningResourceService {
                 )
         );
 
+
+        /*
+         * 16. Simplilearn SkillUp
+         */
+        catalog.add(
+                new ResourceDefinition(
+                        "Simplilearn SkillUp",
+                        "Free self-paced courses in software development, Java, cloud, cybersecurity, data and AI. The provider states that its free SkillUp courses include completion certificates.",
+                        "https://www.simplilearn.com/skillup-free-online-courses",
+                        "Free learning",
+                        "Free certificate on completion of a SkillUp free course; check that the selected course is in the free SkillUp catalog.",
+                        List.of("java", "python", "sql", "mysql", "docker", "aws", "azure", "cloud", "artificial intelligence", "ai", "machine learning", "data science", "cybersecurity", "software development", "testing", "web development", "microservices", "devops", "linux", "programming"),
+                        1,
+                        false
+                )
+        );
+
+        /*
+         * 17. HubSpot Academy
+         */
+        catalog.add(
+                new ResourceDefinition(
+                        "HubSpot Academy",
+                        "Free online courses and certifications in digital marketing, CRM, sales, customer support and business skills.",
+                        "https://academy.hubspot.com/certification-overview",
+                        "Free learning",
+                        "Free certifications are available for eligible HubSpot Academy certification courses.",
+                        List.of("digital marketing", "marketing", "sales", "crm", "business", "communication", "customer service", "analytics", "content marketing"),
+                        1,
+                        false
+                )
+        );
+
+        /*
+         * 18. Salesforce Trailhead
+         */
+        catalog.add(
+                new ResourceDefinition(
+                        "Salesforce Trailhead",
+                        "Hands-on, gamified learning for Salesforce, CRM, automation, AI and business workflows.",
+                        "https://trailhead.salesforce.com/",
+                        "Free learning",
+                        "Trailhead badges and learning credentials are free; official Salesforce certification exams are separate and may cost money.",
+                        List.of("salesforce", "crm", "artificial intelligence", "ai", "cloud", "business", "automation", "data", "analytics"),
+                        2,
+                        false
+                )
+        );
+
+        /*
+         * 19. Coursera
+         */
+        catalog.add(
+                new ResourceDefinition(
+                        "Coursera",
+                        "Discover university and industry courses across programming, IT, AI, data, cloud and professional skills.",
+                        "https://www.coursera.org/",
+                        "Free access depends on course and enrollment option; some courses require payment or subscription.",
+                        "Certificates are usually paid. Do not assume a free preview or audit includes a certificate.",
+                        List.of("java", "python", "sql", "cloud", "aws", "azure", "artificial intelligence", "ai", "machine learning", "data science", "cybersecurity", "software development", "web development", "project management", "networking"),
+                        5,
+                        true
+                )
+        );
+
+        /*
+         * 20. edX
+         */
+        catalog.add(
+                new ResourceDefinition(
+                        "edX",
+                        "University and professional courses in computer science, programming, AI, data and cloud topics.",
+                        "https://www.edx.org/",
+                        "Many open courses can be audited for free; programs and verified tracks vary.",
+                        "Free audit generally does not include a certificate; verified certificates usually require payment.",
+                        List.of("java", "python", "programming", "computer science", "sql", "cloud", "artificial intelligence", "ai", "machine learning", "data science", "cybersecurity", "software development", "web development", "networking"),
+                        6,
+                        true
+                )
+        );
+
+        /*
+         * 21. NPTEL
+         */
+        catalog.add(
+                new ResourceDefinition(
+                        "NPTEL / SWAYAM",
+                        "Indian university-backed courses in programming, data structures, databases, cloud and engineering subjects.",
+                        "https://nptel.ac.in/",
+                        "Course learning is generally free to access.",
+                        "A certificate typically requires registering for and passing a separately paid proctored exam; verify the course's current rules.",
+                        List.of("java", "python", "c", "c++", "programming", "data structures", "algorithms", "database", "sql", "cloud", "artificial intelligence", "ai", "machine learning", "data science", "cybersecurity", "computer science", "software development"),
+                        3,
+                        true
+                )
+        );
+
         return catalog;
     }
 
@@ -656,10 +753,13 @@ public class LearningResourceService {
                  * "spring boot" can match a resource
                  * tagged with "spring boot".
                  */
+                if (normalizedSkill.length() <= 2) {
+                    continue;
+                }
+
                 if (normalizedSkill.contains(
                         normalizedResourceSkill)
-                        ||
-                        normalizedResourceSkill.contains(
+                        || normalizedResourceSkill.contains(
                                 normalizedSkill)) {
 
                     return true;
@@ -689,8 +789,25 @@ public class LearningResourceService {
                     url,
                     learningCost,
                     credentialStatus,
-                    determineResourceType()
+                    determineResourceType(),
+                    determineCredentialType(),
+                    relevantSkills
             );
+        }
+
+        private String determineCredentialType() {
+
+            return switch (platform) {
+                case "freeCodeCamp", "Kaggle Learn", "Simplilearn SkillUp",
+                     "HubSpot Academy", "Google Skillshop" -> "FREE_CERTIFICATE";
+                case "IBM SkillsBuild", "Salesforce Trailhead" -> "FREE_BADGE";
+                case "Microsoft Learn", "AWS Skill Builder", "NPTEL / SWAYAM",
+                     "Oracle Academy" -> "FREE_LEARNING_PAID_EXAM";
+                case "Great Learning Academy" -> "PAID_CERTIFICATE";
+                case "The Odin Project" -> "NO_CERTIFICATE";
+                case "Coursera", "edX" -> "FREE_AUDIT_PAID_CERTIFICATE";
+                default -> "VARIES";
+            };
         }
 
         private String determineResourceType() {

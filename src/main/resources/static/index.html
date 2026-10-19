@@ -1666,8 +1666,8 @@
                         </h2>
 
                         <p>
-                            Search the learning catalog for resources
-                            relevant to the skills you need.
+                            One curated directory for learning, free certificates and digital credentials.
+                            Filter by what you can earn without paying.
                         </p>
 
                     </div>
@@ -1687,7 +1687,7 @@
                                 class="field-label"
                                 for="learningSkills">
 
-                                Skills to learn
+                                Get recommendations for your skill gaps
 
                             </label>
 
@@ -1695,7 +1695,8 @@
                                 type="text"
                                 id="learningSkills"
                                 class="form-control custom-input"
-                                placeholder="Docker, AWS, Microservices"
+                                placeholder="Try Java, Spring Boot, SQL, Docker..."
+                                aria-describedby="learningSkillHelp"
                                 required>
 
                         </div>
@@ -1704,32 +1705,55 @@
                             type="submit"
                             class="primary-button">
 
-                            Find Resources
+                            Find matching resources <span aria-hidden="true">→</span>
 
                         </button>
 
                     </form>
 
 
-                    <div class="resource-note">
+                    <div class="resource-note" id="learningSkillHelp">
+
+                        <span aria-hidden="true">i</span>
 
                         <span>
-                            i
-                        </span>
-
-                        <span>
-                            Certificate availability can vary
-                            by platform and course.
+                            Add one or more comma-separated skills. We show matching providers and remove duplicates.
                         </span>
 
                     </div>
 
                 </div>
 
+                <div class="resource-catalog-heading">
+                    <div>
+                        <span class="section-kicker">CURATED DIRECTORY</span>
+                        <h3>Explore learning platforms</h3>
+                        <p>Certificate status is labeled honestly: free certificate, free badge, paid exam/certificate, varies, or no certificate.</p>
+                    </div>
+                    <label class="catalog-search-wrap" for="resourceCatalogSearch">
+                        <span aria-hidden="true">⌕</span>
+                        <input type="search" id="resourceCatalogSearch" placeholder="Search sites or skills" autocomplete="off">
+                    </label>
+                </div>
+
+                <div class="resource-filter-bar" role="group" aria-label="Filter learning resources">
+                    <button type="button" class="resource-filter active" data-resource-filter="ALL">All resources</button>
+                    <button type="button" class="resource-filter" data-resource-filter="FREE_CERTIFICATE">Free certificates</button>
+                    <button type="button" class="resource-filter" data-resource-filter="FREE_BADGE">Free badges</button>
+                    <button type="button" class="resource-filter" data-resource-filter="FREE_LEARNING_PAID_EXAM">Free learning · paid credential</button>
+                    <button type="button" class="resource-filter" data-resource-filter="PAID_CERTIFICATE">Certificate may cost</button>
+                    <button type="button" class="resource-filter" data-resource-filter="VARIES">Varies by course</button>
+                    <button type="button" class="resource-filter" data-resource-filter="NO_CERTIFICATE">No certificate</button>
+                </div>
+
+                <div class="resource-results-meta" aria-live="polite">
+                    <span id="resourceResultSummary">Loading learning platforms…</span>
+                    <button type="button" id="browseAllResources" class="text-button d-none">Browse all platforms</button>
+                </div>
 
                 <div
                     class="resource-grid"
-                    id="learningResourceResults">
+                    id="learningResourceResults" aria-live="polite">
 
                     <div class="empty-state full-span">
 
